@@ -2,19 +2,16 @@ import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-import {AdminURL, BusinessURL} from "@/constants/urls";
+import { AdminURL, BusinessURL } from "@/constants/urls";
 
 const getRedirectUrl = (searched: string) => {
-    console.log("searched=", searched);
-    if (searched === "")
-        return AdminURL;
-    return BusinessURL + "?name=" + searched;
-}
-
+  console.log("searched=", searched);
+  if (searched.length === 0) return AdminURL;
+  return BusinessURL + "?name=" + searched;
+};
 
 export default function LoginPage() {
   const router = useRouter();
@@ -31,17 +28,20 @@ export default function LoginPage() {
         redirect: false,
         phone,
         otp,
-        callbackUrl: getRedirectUrl(businessName),
+        callbackUrl: BusinessURL,
       });
       console.log("Res", res);
       if (!res?.error) {
-        router.push(getRedirectUrl(businessName));
+        router.push(BusinessURL);
       } else {
         setError("Invalid phone or otp");
       }
     } catch (err: any) {}
   };
-
+  /** TODO:
+   * 1. Login with google.
+   * 2. save the jwt token in cache or somewhere and auto re-direct if the user is logged in already.
+   */
   return (
     <>
       <div className="flex justify-center items-center bg-slate-100">
@@ -67,8 +67,8 @@ export default function LoginPage() {
                 type="text"
                 autoComplete="one-time-code"
                 inputMode="numeric"
-                maxLength={4}
-                pattern="\d{4}"
+                maxLength={6}
+                pattern="\d{6}"
                 onChange={(e) => setOtp(e.target.value)}
               />
             </div>
