@@ -68,3 +68,11 @@ routes(app);
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
+/**
+ * TODO:
+ * 1. write a script to update the encrypted mongoDB data to github (use a new branch "data").
+ *      a. this should also pull the data and decrypt the data and restart the mongoDB with new snapshot.
+ * 2. write github action to deploy this whole setup in vercel.
+ * 3. update logging capability with request ids, truncating the auth details, etc.
+ */

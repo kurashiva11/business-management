@@ -80,3 +80,5 @@ exports.loginRequired = async function (req, res, next) {
         return res.status(401).send({"error": "something went wrong while logging user in."})
     }
 };
+
+// TODO: delete the user data?

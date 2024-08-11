@@ -5,4 +5,5 @@ module.exports = function(router) {
     var businessHandlers = require('../controllers/BusinessController');
     router.get('/business', businessHandlers.GetBusinessData);
     router.post('/business', userHandlers.loginRequired, businessHandlers.PostBusinessData);
+    router.put('/business/inventory', userHandlers.loginRequired, businessHandlers.UpdateBusinessInventory);
 };
