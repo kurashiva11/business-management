@@ -1,2 +1,2 @@
-export const AdminURL = "/admin";
+export const UserURL = "/user";
 export const BusinessURL = "/business";

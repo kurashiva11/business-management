@@ -5,12 +5,12 @@ import { Label } from "@/components/ui/label";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-import { AdminURL, BusinessURL } from "@/constants/urls";
+import { UserURL, BusinessURL } from "@/constants/urls";
 
 const getRedirectUrl = (searched: string) => {
   console.log("searched=", searched);
-  if (searched.length === 0) return AdminURL;
-  return BusinessURL + "?name=" + searched;
+  if (searched.length === 0) return BusinessURL;
+  return UserURL + "?name=" + searched;
 };
 
 export default function LoginPage() {
@@ -24,17 +24,20 @@ export default function LoginPage() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await signIn("credentials", {
-        redirect: false,
-        phone,
-        otp,
-        callbackUrl: BusinessURL,
+      var res = await fetch("http://localhost:8080/login", {
+        body: JSON.stringify({
+          phone,
+          otp,
+        }),
+        method: "POST",
       });
-      console.log("Res", res);
-      if (!res?.error) {
-        router.push(BusinessURL);
-      } else {
-        setError("Invalid phone or otp");
+
+      console.log(res)
+      if (res.ok) {
+        router.push(getRedirectUrl(businessName));
+      }
+      else {
+        router.push("/unknown-user")
       }
     } catch (err: any) {}
   };
